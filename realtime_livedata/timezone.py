@@ -10,7 +10,7 @@ def utc_to_jst(utcTime):
 
     jstDte = dte + datetime.timedelta(hours=9)
 
-    jstStartTime = jstDte.strftime('%Y/%m/%d %H:%M:%S')
+    jstStartTime = jstDte.strftime('%Y/%m/%d_%H:%M:%S')
 
     return jstStartTime
 

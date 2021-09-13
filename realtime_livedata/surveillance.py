@@ -7,17 +7,9 @@ import schedule
 import redis
 import main
 import operation_redis
-import logging
+import log_vsc
 
-# ログ設定
-logger = logging.getLogger('LoggingTest')
-logger.setLevel(10)
-fh = logging.FileHandler('/home/pi/vtuber/tomeru/realtime_livedata/test.log')
-logger.addHandler(fh)
-formatter = logging.Formatter('%(asctime)s:%(lineno)d:%(levelname)s:%(message)s')
-fh.setFormatter(formatter)
-logger.log(10, 'surveillance 0')
-
+logger = log_vsc.logger_set()
 
 dtNow = datetime.datetime.now()
 scheduledStartTime = operation_redis.get_scheduled_start_time()

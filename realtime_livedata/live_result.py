@@ -9,39 +9,27 @@ mpl.use('Agg') # AGG(Anti-Grain Geometry engine)
 import matplotlib.pyplot as plt
 import datetime
 import tweet
-import logging
+import log_vsc
+import operation_s3
+import os
+import operation_redis
 
 def make_graph():
-    # ログ設定
-    logger = logging.getLogger('LoggingTest')
-    logger.setLevel(10)
-    fh = logging.FileHandler('/home/pi/vtuber/tomeru/realtime_livedata/test.log')
-    logger.addHandler(fh)
-    formatter = logging.Formatter('%(asctime)s:%(lineno)d:%(levelname)s:%(message)s')
-    fh.setFormatter(formatter)
+
+    logger = log_vsc.logger_set()
 
     logger.log(10, 'live_result 1')
 
-    r = redis.Redis(host='localhost', port=6379, db=3)
+    strTimeLists = operation_redis.get_time_record()
 
-    timeLists = r.lrange("timeRecord", 0, -1)
-    #print(timeLists)
-    strTimeLists = []
-    for byteTime in timeLists:
-        strTimeLists.append(byteTime.decode())
-    print(strTimeLists)
-
-    viewerLists = r.lrange("viewersRecord", 0, -1)
-    #print(viewerLists)
-    intViewerLists = []
-    for byteViewer in viewerLists:
-        intViewerLists.append(int(byteViewer.decode()))
-    print(intViewerLists)
+    intViewerLists = operation_redis.get_viewers_record()
 
     logger.log(10, 'live_result 2')
 
     left = np.array(strTimeLists)
     height = np.array(intViewerLists)
+
+    logger.log(10, 'live_result 3')
 
     plt.plot(left, height, marker="o")
 
@@ -51,19 +39,44 @@ def make_graph():
     plt.ylabel('viewer')
     plt.grid(color='b', linestyle=':', linewidth=0.3)
 
+    logger.log(10, 'live_result 4')
+
     dtNow = datetime.datetime.now()
     strDtNow = dtNow.strftime("%Y%m%d_%H%M")
-    imgPath = "/home/pi/vtuber/tomeru/realtime_livedata/img/" + strDtNow + "_liveresult.png"
 
-    logger.log(10, 'live_result 3')
+    videoId = operation_redis.get_current_video_id()
 
-    #plt.savefig('./img/ret.png')
+    imgName =  strDtNow + "_" + videoId + "_graph.png"
+
+    thumbnailImgName =  strDtNow + "_" + videoId + "_thumbnail.jpg"
+
+    imgDir = "/root/vtuber/vsc/realtime_livedata/img/"
+
+    imgPath = imgDir + imgName
+
+    #imgPath = "/root/vtuber/vsc/realtime_livedata/img/" + strDtNow + "_" + videoId + "_liveresult.png"
+
+    logger.log(10, 'live_result 5')
+
+    logger.log(10, 'imgPath' + imgPath)
+
+    logger.log(10, 'live_result 6')
+
     plt.savefig(imgPath)
 
-    logger.log(10, 'live_result 4')
+    logger.log(10, 'live_result 7')
 
     tweet.result_tweet(imgPath)
 
+    logger.log(10, 'live_result 8')
+
+    operation_s3.upload_graph(imgName)
+
+    #operation_s3.upload_thumbnail(thumbnailImgName)
+
+    logger.log(10, 'live_result 9')
+
+    #os.remove(imgPath)
 
 #make_graph()
 

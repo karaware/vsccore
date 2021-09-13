@@ -6,9 +6,12 @@ import redis
 import timezone
 import datetime
 import ast
+import log_vsc
 
 def set_upcoming_stream(youtube, videoIdLists):
-    r = redis.Redis(host='localhost', port=6379, db=1)
+    logger = log_vsc.logger_set()
+
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=1)
 
     for videoId in videoIdLists:
         videosResponse = youtube.videos().list(
@@ -42,7 +45,9 @@ def set_upcoming_stream(youtube, videoIdLists):
 
 
 def set_next_stream(nextStream):
-    r = redis.Redis(host='localhost', port=6379, db=1)
+    logger = log_vsc.logger_set()
+
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=1)
 
     keys = r.keys("*")
     #print(keys)
@@ -55,11 +60,19 @@ def set_next_stream(nextStream):
 
     streamInfoLists.sort(reverse=False, key=lambda e: e["scheduledStartTime"])
 
-    nextStream = streamInfoLists[0]
+    print(streamInfoLists)
+    logger.log(10, streamInfoLists)
+
+    try:
+        nextStream = streamInfoLists[0]
+    except:
+        print('next_stream not found')
+        logger.log(10, 'next_stream not found')
+        exit()
 
     #print(json.dumps(nextStream, indent=2, ensure_ascii=False))
 
-    r = redis.Redis(host='localhost', port=6379, db=2)
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=2)
 
     r.set("videoId", nextStream["videoId"])
     r.set("title", nextStream["title"])
@@ -68,7 +81,9 @@ def set_next_stream(nextStream):
 
 
 def get_next_stream():
-    r = redis.Redis(host='localhost', port=6379, db=2)
+    logger = log_vsc.logger_set()
+
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=2)
     keys = r.keys("*")
 
     nextStream = {}
@@ -84,17 +99,17 @@ def get_next_stream():
 
 
 def flush_db_1():
-    r = redis.Redis(host='localhost', port=6379, db=1)
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=1)
     r.flushdb()
 
 
 def flush_db_2():
-    r = redis.Redis(host='localhost', port=6379, db=2)
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=2)
     r.flushdb()
 
 
 def flush_db_3():
-    r = redis.Redis(host='localhost', port=6379, db=3)
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=3)
     r.flushdb()
 
 
