@@ -10,9 +10,9 @@ import os
 
 def upload_graph(graphImgName):
     bucket = "vsc-graph"
-    filePath = "/root/vtuber/vsc/realtime_livedata/img/" + graphImgName
+    filePath = "/home/vsc/vsccore/tomeru/realtime_livedata/img/" + graphImgName
 
-    s3Key = "njiro/" + graphImgName
+    s3Key = "tomeru/" + graphImgName
     #s3Key = "tomeru/" + graphImgName
 
     operation_redis.set_graph_img_name(graphImgName)
@@ -32,7 +32,7 @@ def upload_thumbnail(currentVideoId, currentThumbnailsUrl):
     strDtNow = dtNow.strftime("%Y%m%d_%H%M")
 
     thumbnailImgName = strDtNow + "_" + currentVideoId + "_thumbnail.jpg"
-    s3Key = "njiro/" + thumbnailImgName
+    s3Key = "tomeru/" + thumbnailImgName
     #s3Key = "tomeru/" + thumbnailImgName
 
     operation_redis.set_thumbnail_img_name(thumbnailImgName)

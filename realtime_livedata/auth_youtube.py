@@ -6,8 +6,6 @@ from apiclient.discovery import build
 import variable
 
 def get_object():
-    #API_KEY = 'AIzaSyDmJgRoehDS8xilq1ziUBTraScPYaevZq4' #vtuber-date
-    #API_KEY = 'AIzaSyCdziJOaYIUEiZ5f-qTOeQBmt_4Cxucw4w' #tomerubot
     YOUTUBE_API_SERVICE_NAME = 'youtube'
     YOUTUBE_API_VERSION = 'v3'
 

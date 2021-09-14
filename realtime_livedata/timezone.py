@@ -14,7 +14,4 @@ def utc_to_jst(utcTime):
 
     return jstStartTime
 
-input = "2021-08-08T11:00:00Z"
-#print("[UTC] " + input)
-#print("[JST] " + utc_to_jst(input))
 

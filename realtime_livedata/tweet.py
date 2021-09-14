@@ -56,18 +56,18 @@ def result_tweet(imgPath):
     api.update_with_media(filename=imgPath,status=message)
 
 
-def tweet_next_steam(nextStream):
-    auth = tweepy.OAuthHandler(variable.CK, variable.CS)
-    auth.set_access_token(variable.AT, variable.AS)
-    api = tweepy.API(auth)
-
-    message = "#息根とめる 次の #YouTube 配信予定\n"
-    message += "開始予定時刻 : " + nextStream["scheduledStartTime"] + "\n"
-    message += "タイトル : " + nextStream["title"] + "\n"
-    message += "URL : https://www.youtube.com/watch?v=" + nextStream["videoId"]
-
-    img = requests.get(nextStream["thumbnailsUrl"]).content
-    result_img = api.media_upload(filename='img.png', file=BytesIO(img))
-    api.update_status(status=message, media_ids=[result_img.media_id])
+#def tweet_next_steam(nextStream):
+#    auth = tweepy.OAuthHandler(variable.CK, variable.CS)
+#    auth.set_access_token(variable.AT, variable.AS)
+#    api = tweepy.API(auth)
+#
+#    message = "#息根とめる 次の #YouTube 配信予定\n"
+#    message += "開始予定時刻 : " + nextStream["scheduledStartTime"] + "\n"
+#    message += "タイトル : " + nextStream["title"] + "\n"
+#    message += "URL : https://www.youtube.com/watch?v=" + nextStream["videoId"]
+#
+#    img = requests.get(nextStream["thumbnailsUrl"]).content
+#    result_img = api.media_upload(filename='img.png', file=BytesIO(img))
+#    api.update_status(status=message, media_ids=[result_img.media_id])
 
 

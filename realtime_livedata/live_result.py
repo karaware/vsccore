@@ -50,11 +50,9 @@ def make_graph():
 
     thumbnailImgName =  strDtNow + "_" + videoId + "_thumbnail.jpg"
 
-    imgDir = "/root/vtuber/vsc/realtime_livedata/img/"
+    imgDir = "/home/vsc/vsccore/tomeru/realtime_livedata/img/"
 
     imgPath = imgDir + imgName
-
-    #imgPath = "/root/vtuber/vsc/realtime_livedata/img/" + strDtNow + "_" + videoId + "_liveresult.png"
 
     logger.log(10, 'live_result 5')
 

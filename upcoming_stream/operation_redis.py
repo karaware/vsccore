@@ -11,7 +11,7 @@ import log_vsc
 def set_upcoming_stream(youtube, videoIdLists):
     logger = log_vsc.logger_set()
 
-    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=1)
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=7)
 
     for videoId in videoIdLists:
         videosResponse = youtube.videos().list(
@@ -47,7 +47,7 @@ def set_upcoming_stream(youtube, videoIdLists):
 def set_next_stream(nextStream):
     logger = log_vsc.logger_set()
 
-    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=1)
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=7)
 
     keys = r.keys("*")
     #print(keys)
@@ -72,7 +72,7 @@ def set_next_stream(nextStream):
 
     #print(json.dumps(nextStream, indent=2, ensure_ascii=False))
 
-    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=2)
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=8)
 
     r.set("videoId", nextStream["videoId"])
     r.set("title", nextStream["title"])
@@ -83,7 +83,7 @@ def set_next_stream(nextStream):
 def get_next_stream():
     logger = log_vsc.logger_set()
 
-    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=2)
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=8)
     keys = r.keys("*")
 
     nextStream = {}
@@ -97,19 +97,28 @@ def get_next_stream():
     #print(json.dumps(nextStream, indent=2, ensure_ascii=False))
     return nextStream
 
+def get_current_live_status():
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=9)
+    try:
+        currentLiveStatus = r.get("currentLiveStatus").decode()
+    except:
+        print("currentLiveStatus was not found")
+        currentLiveStatus = "none"
 
-def flush_db_1():
-    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=1)
+    return currentLiveStatus
+
+def flush_db_7():
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=7)
     r.flushdb()
 
 
-def flush_db_2():
-    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=2)
+def flush_db_8():
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=8)
     r.flushdb()
 
 
-def flush_db_3():
-    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=3)
+def flush_db_9():
+    r = redis.Redis(host='vsc-redis-001.amt4dg.0001.apne1.cache.amazonaws.com', port=6379, db=9)
     r.flushdb()
 
 

@@ -13,7 +13,14 @@ logger = log_vsc.logger_set()
 
 dtNow = datetime.datetime.now()
 scheduledStartTime = operation_redis.get_scheduled_start_time()
-dtScheduledStartTime = datetime.datetime.strptime(scheduledStartTime, '%Y/%m/%d %H:%M:%S')
+
+try:
+    dtScheduledStartTime = datetime.datetime.strptime(scheduledStartTime, '%Y/%m/%d %H:%M:%S')
+except:
+    print('next_stream not found')
+    logger.log(10, 'next_stream not found')
+    exit()
+
 dtScheduledBeforeTenMin = dtScheduledStartTime - datetime.timedelta(minutes=10)
 
 endFlag = operation_redis.get_end_flag()

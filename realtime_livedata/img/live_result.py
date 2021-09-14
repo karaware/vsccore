@@ -48,7 +48,7 @@ def make_graph():
 
     dtNow = datetime.datetime.now()
     strDtNow = dtNow.strftime("%Y%m%d_%H%M")
-    imgPath = "/home/pi/vtuber/tomeru/realtime_livedata/img/" + strDtNow + "_liveresult.png"
+    imgPath = "/home/vsc/vsccore/pekora/realtime_livedata/img/" + strDtNow + "_liveresult.png"
 
     logger.log(10, 'live_result 3')
 

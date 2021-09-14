@@ -7,10 +7,6 @@ import upcoming_videoid
 import variable
 
 def set_upcoming_stream():
-
-    #channelId = 'UCXYCBPWmFXbdTGD70eQe8zQ' #tomeru
-    #channelId = 'UCiv5SwCP0tqIuMx6zubB73g' #njiro
-
     youtube = auth_youtube.get_object()
 
     videoIdLists = upcoming_videoid.search_upcoming_videoid(youtube, variable.channelId)

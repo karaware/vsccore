@@ -3,11 +3,12 @@
 
 from apiclient.discovery import build
 import datetime
+import variable
 
 def get_videoid(youtube, channelId):
     searchResponse = youtube.search().list(
         part = "snippet",
-        channelId = channelId,
+        channelId = variable.channelId,
         type = "video",
         eventType = "upcoming",
         maxResults = 50,
@@ -18,7 +19,5 @@ def get_videoid(youtube, channelId):
  
     for item in searchResponse.get("items", []):
         videoIdLists.append(item["id"]["videoId"])
-
-    #print(videoIdLists)
 
     return videoIdLists
