@@ -8,6 +8,7 @@ import matplotlib as mpl
 mpl.use('Agg') # AGG(Anti-Grain Geometry engine)
 import matplotlib.pyplot as plt
 import datetime
+from datetime import datetime as dt
 import tweet
 import log_vsc
 import operation_s3
@@ -21,17 +22,19 @@ def make_graph():
     logger.log(10, 'live_result 1')
 
     strTimeLists = operation_redis.get_time_record()
+    dateTimeLists = [dt.strptime(d, '%H:%M') for d in strTimeLists]
 
     intViewerLists = operation_redis.get_viewers_record()
 
     logger.log(10, 'live_result 2')
 
-    left = np.array(strTimeLists)
+    #left = np.array(strTimeLists)
+    left = np.array(dateTimeLists)
     height = np.array(intViewerLists)
 
     logger.log(10, 'live_result 3')
 
-    plt.plot(left, height, marker="o")
+    plt.plot(left, height)
 
     plt.xticks(rotation=90)
 

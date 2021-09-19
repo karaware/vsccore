@@ -25,38 +25,30 @@ def set_current_data(videoDetailData):
 
     try:
         currentViewers = videoDetailData["liveStreamingDetails"]["concurrentViewers"]
-    except:
-        print("currentViewers was not found")
-
-    try:
-        logger.log(10,"start get_current_viewers")
-
-        oneBeforeCurrentViewers = operation_redis.get_current_viewers()
-
-        logger.log(10, oneBeforeCurrentViewers)
-        logger.log(10, type(oneBeforeCurrentViewers))
-        #intCurrentViewers = int(currentViewers)
-
-        intOneBeforeCurrentViewers = int(oneBeforeCurrentViewers)
-
-        print(oneBeforeCurrentViewers)
-        logger.log(10, "oneBeforeCurrentViewers : " + oneBeforeCurrentViewers)
-
-        print(currentViewers)
+        intCurrentViewers = int(currentViewers)
         logger.log(10, "currentViewers : " + currentViewers)
         intCurrentViewers = int(currentViewers)
-
-        if intOneBeforeCurrentViewers < intCurrentViewers:
-            maxViewers = intCurrentViewers
-            logger.log(10, "intOneBeforeCurrentViewers < intCurrentViewers")
-        else:
-            maxViewers = intOneBeforeCurrentViewers
-            logger.log(10, "intOneBeforeCurrentViewers > intCurrentViewers")
-
-        operation_redis.set_max_viewers(maxViewers)
     except:
-        print("concurrentViewers or oneBeforeCurrentViewers was not found")
-        logger.log(10, "concurrentViewers or oneBeforeCurrentViewers was not found")
+        print("currentViewers was not found")
+        logger.log(10, "currentViewers was not found")
+
+    try:
+        maxViewers = operation_redis.get_max_viewers()
+        intMaxViewers = int(maxViewers)
+        logger.log(10, "maxViewers : " + maxViewers)
+
+        if intMaxViewers < intCurrentViewers:
+            intMaxViewers = intCurrentViewers
+            logger.log(10, "intMaxViewers < intCurrentViewers")
+            logger.log(10, "intMaxViewers : " + currentViewers)
+        else:
+            logger.log(10, "intMaxViewers > intCurrentViewers")
+            logger.log(10, "intMaxViewers : " + maxViewers)
+
+        operation_redis.set_max_viewers(intMaxViewers)
+    except:
+        print("concurrentViewers or maxViewers was not found")
+        logger.log(10, "concurrentViewers or maxViewers was not found")
 
     try:
         #currentViewers = videoDetailData["liveStreamingDetails"]["concurrentViewers"]
